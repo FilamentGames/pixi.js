@@ -9,6 +9,9 @@
     "Chad Engler <chad@pantherdev.com>",
     "Richard Davey <rdavey@gmail.com>"
   ],
+  "publishConfig": {
+    "registry": "http://registry.filamentgames.com"
+  },
   "main": "./lib/index.js",
   "homepage": "http://goodboydigital.com/",
   "bugs": "https://github.com/pixijs/pixi.js/issues",
