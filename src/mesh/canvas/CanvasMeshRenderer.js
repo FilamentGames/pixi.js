@@ -210,7 +210,7 @@ export default class MeshSpriteRenderer
             deltaF / delta
         );
 
-	context.globalAlpha = mesh.alpha;	
+        context.globalAlpha = mesh.alpha;
 
         context.drawImage(
             textureSource,
