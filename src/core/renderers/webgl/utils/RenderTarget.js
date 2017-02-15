@@ -278,8 +278,8 @@ export default class RenderTarget
             pm.a = 1 / destinationFrame.width * 2;
             pm.d = 1 / destinationFrame.height * 2;
 
-            pm.tx = -1 - sourceFrame.x * pm.a;
-            pm.ty = -1 - sourceFrame.y * pm.d;
+            pm.tx = -1 - (sourceFrame.x * pm.a);
+            pm.ty = -1 - (sourceFrame.y * pm.d);
         }
     }
 

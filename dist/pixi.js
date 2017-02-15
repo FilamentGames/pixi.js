@@ -1,6 +1,6 @@
 /*!
- * pixi.js - v4.2.3-filament2
- * Compiled Fri, 20 Jan 2017 02:36:13 UTC
+ * pixi.js - v4.2.3-filament3
+ * Compiled Wed, 15 Feb 2017 17:10:56 UTC
  *
  * pixi.js is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -7341,7 +7341,7 @@ exports.__esModule = true;
  * @name VERSION
  * @type {string}
  */
-var VERSION = exports.VERSION = '4.2.3-filament2';
+var VERSION = exports.VERSION = '4.2.3-filament3';
 
 /**
  * Two Pi.
@@ -18893,10 +18893,10 @@ var RenderTarget = function () {
       pm.ty = -1 - sourceFrame.y * pm.d;
     } else {
       pm.a = 1 / destinationFrame.width * 2;
-      pm.d = -1 / destinationFrame.height * 2;
+      pm.d = 1 / destinationFrame.height * 2;
 
       pm.tx = -1 - sourceFrame.x * pm.a;
-      pm.ty = 1 - sourceFrame.y * pm.d;
+      pm.ty = -1 - sourceFrame.y * pm.d;
     }
   };
 
@@ -23881,32 +23881,32 @@ var TextureUvs = function () {
             var cY = frame.y / th + h2;
 
             rotate = _GroupD2.default.add(rotate, _GroupD2.default.NW); // NW is top-left corner
-            this.x0 = cX + w2 * _GroupD2.default.uX(rotate);
-            this.y0 = cY + h2 * _GroupD2.default.uY(rotate);
+            this.x3 = cX + w2 * _GroupD2.default.uX(rotate);
+            this.y3 = cY + h2 * _GroupD2.default.uY(rotate);
 
             rotate = _GroupD2.default.add(rotate, 2); // rotate 90 degrees clockwise
-            this.x1 = cX + w2 * _GroupD2.default.uX(rotate);
-            this.y1 = cY + h2 * _GroupD2.default.uY(rotate);
-
-            rotate = _GroupD2.default.add(rotate, 2);
             this.x2 = cX + w2 * _GroupD2.default.uX(rotate);
             this.y2 = cY + h2 * _GroupD2.default.uY(rotate);
 
             rotate = _GroupD2.default.add(rotate, 2);
-            this.x3 = cX + w2 * _GroupD2.default.uX(rotate);
-            this.y3 = cY + h2 * _GroupD2.default.uY(rotate);
-        } else {
-            this.x0 = frame.x / tw;
-            this.y0 = frame.y / th;
+            this.x1 = cX + w2 * _GroupD2.default.uX(rotate);
+            this.y1 = cY + h2 * _GroupD2.default.uY(rotate);
 
-            this.x1 = (frame.x + frame.width) / tw;
-            this.y1 = frame.y / th;
+            rotate = _GroupD2.default.add(rotate, 2);
+            this.x0 = cX + w2 * _GroupD2.default.uX(rotate);
+            this.y0 = cY + h2 * _GroupD2.default.uY(rotate);
+        } else {
+            this.x3 = frame.x / tw;
+            this.y3 = frame.y / th;
 
             this.x2 = (frame.x + frame.width) / tw;
-            this.y2 = (frame.y + frame.height) / th;
+            this.y2 = frame.y / th;
 
-            this.x3 = frame.x / tw;
-            this.y3 = (frame.y + frame.height) / th;
+            this.x1 = (frame.x + frame.width) / tw;
+            this.y1 = (frame.y + frame.height) / th;
+
+            this.x0 = frame.x / tw;
+            this.y0 = (frame.y + frame.height) / th;
         }
 
         this.uvsUint32[0] = (this.y0 * 65535 & 0xFFFF) << 16 | this.x0 * 65535 & 0xFFFF;
