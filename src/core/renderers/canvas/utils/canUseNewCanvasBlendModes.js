@@ -2,7 +2,7 @@
  * Creates a little colored canvas
  *
  * @ignore
- * @param {string} color - The color to make the canvas
+ * @param {number} color - The color to make the canvas
  * @return {canvas} a small canvas element
  */
 function createColoredCanvas(color)

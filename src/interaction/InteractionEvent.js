@@ -12,15 +12,14 @@ export default class InteractionEvent
     constructor()
     {
         /**
-         * Whether this event will continue propagating in the tree
+         * Which this event will continue propagating in the tree
          *
          * @member {boolean}
          */
         this.stopped = false;
 
         /**
-         * The object which caused this event to be dispatched.
-         * For listener callback see {@link PIXI.interaction.InteractionEvent.currentTarget}.
+         * The object to which event is dispatched.
          *
          * @member {PIXI.DisplayObject}
          */

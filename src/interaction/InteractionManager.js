@@ -16,8 +16,6 @@ Object.assign(
  * if its interactive parameter is set to true
  * This manager also supports multitouch.
  *
- * An instance of this class is automatically created by default, and can be found at renderer.plugins.interaction
- *
  * @class
  * @extends EventEmitter
  * @memberof PIXI.interaction
@@ -55,7 +53,7 @@ export default class InteractionManager extends EventEmitter
         this.autoPreventDefault = options.autoPreventDefault !== undefined ? options.autoPreventDefault : true;
 
         /**
-         * Frequency in milliseconds that the mousemove, moveover & mouseout interaction events will be checked.
+         * As this frequency increases the interaction events will be checked more often.
          *
          * @member {number}
          * @default 10
@@ -107,15 +105,15 @@ export default class InteractionManager extends EventEmitter
         this.interactionDOMElement = null;
 
         /**
-         * This property determines if mousemove and touchmove events are fired only when the cursor
+         * This property determins if mousemove and touchmove events are fired only when the cursror
          * is over the object.
          * Setting to true will make things work more in line with how the DOM verison works.
          * Setting to false can make things easier for things like dragging
          * It is currently set to false as this is how pixi used to work. This will be set to true in
          * future versions of pixi.
          *
+         * @private
          * @member {boolean}
-         * @default false
          */
         this.moveWhenInside = false;
 
@@ -737,10 +735,8 @@ export default class InteractionManager extends EventEmitter
             rect = this.interactionDOMElement.getBoundingClientRect();
         }
 
-        const resolutionMultiplier = navigator.isCocoonJS ? this.resolution : (1.0 / this.resolution);
-
-        point.x = ((x - rect.left) * (this.interactionDOMElement.width / rect.width)) * resolutionMultiplier;
-        point.y = ((y - rect.top) * (this.interactionDOMElement.height / rect.height)) * resolutionMultiplier;
+        point.x = ((x - rect.left) * (this.interactionDOMElement.width / rect.width)) / this.resolution;
+        point.y = ((y - rect.top) * (this.interactionDOMElement.height / rect.height)) / this.resolution;
     }
 
     /**

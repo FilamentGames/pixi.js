@@ -38,7 +38,9 @@ describe('getLocalBounds', function ()
 
         const graphics = new PIXI.Graphics();
 
-        graphics.beginFill(0xFF0000).drawCircle(0, 0, 10);
+        graphics.beginFill(0xFF0000).drawCircle(0, 0, 10);// texture);
+
+        graphics.scale.set(2);
 
         parent.addChild(graphics);
 
@@ -50,73 +52,11 @@ describe('getLocalBounds', function ()
         expect(bounds.height).to.equal(20);
     });
 
-    it('should register correct local-bounds with Graphics after clear', function ()
-    {
-        const parent = new PIXI.Container();
-
-        const graphics = new PIXI.Graphics();
-
-        graphics.beginFill(0xFF0000).drawRect(0, 0, 20, 20);
-
-        parent.addChild(graphics);
-
-        let bounds = graphics.getLocalBounds();
-
-        expect(bounds.x).to.equal(0);
-        expect(bounds.y).to.equal(0);
-        expect(bounds.width).to.equal(20);
-        expect(bounds.height).to.equal(20);
-
-        graphics.clear();
-        graphics.beginFill(0xFF, 1);
-        graphics.drawRect(0, 0, 10, 10);
-        graphics.endFill();
-
-        bounds = graphics.getLocalBounds();
-
-        expect(bounds.x).to.equal(0);
-        expect(bounds.y).to.equal(0);
-        expect(bounds.width).to.equal(10);
-        expect(bounds.height).to.equal(10);
-    });
-
-    it('should register correct local-bounds with Graphics after generateCanvasTexture and clear', function ()
-    {
-        const parent = new PIXI.Container();
-
-        const graphics = new PIXI.Graphics();
-
-        graphics.beginFill(0xFF0000).drawRect(0, 0, 20, 20);
-
-        parent.addChild(graphics);
-
-        let bounds = graphics.getLocalBounds();
-
-        graphics.generateCanvasTexture();
-
-        expect(bounds.x).to.equal(0);
-        expect(bounds.y).to.equal(0);
-        expect(bounds.width).to.equal(20);
-        expect(bounds.height).to.equal(20);
-
-        graphics.clear();
-        graphics.beginFill(0xFF, 1);
-        graphics.drawRect(0, 0, 10, 10);
-        graphics.endFill();
-
-        bounds = graphics.getLocalBounds();
-
-        expect(bounds.x).to.equal(0);
-        expect(bounds.y).to.equal(0);
-        expect(bounds.width).to.equal(10);
-        expect(bounds.height).to.equal(10);
-    });
-
     it('should register correct local-bounds with an empty Container', function ()
     {
         const parent = new PIXI.Container();
 
-        const container = new PIXI.Container();
+        const container = new PIXI.Container();// Graphics().beginFill(0xFF0000).drawCircle(0, 0, 10, 10);//texture);
 
         parent.addChild(container);
 
@@ -132,9 +72,9 @@ describe('getLocalBounds', function ()
     {
         const parent = new PIXI.Container();
 
-        const container = new PIXI.Container();
+        const container = new PIXI.Container();// Graphics().beginFill(0xFF0000).drawCircle(0, 0, 10, 10);//texture);
 
-        const graphics = new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 10, 10);
+        const graphics = new PIXI.Graphics().beginFill(0xFF0000).drawRect(0, 0, 10, 10);// texture);
 
         parent.addChild(container);
         container.addChild(graphics);

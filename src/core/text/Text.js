@@ -32,11 +32,10 @@ export default class Text extends Sprite
     /**
      * @param {string} text - The string that you would like the text to display
      * @param {object|PIXI.TextStyle} [style] - The style parameters
-     * @param {HTMLCanvasElement} [canvas] - The canvas element for drawing text
      */
-    constructor(text, style, canvas)
+    constructor(text, style)
     {
-        canvas = canvas || document.createElement('canvas');
+        const canvas = document.createElement('canvas');
 
         canvas.width = 3;
         canvas.height = 3;
@@ -158,10 +157,12 @@ export default class Text extends Sprite
             width += style.dropShadowDistance;
         }
 
-        this.canvas.width = Math.ceil((width + (style.padding * 2)) * this.resolution);
+        width += style.padding * 2;
+
+        this.canvas.width = Math.ceil((width + this.context.lineWidth) * this.resolution);
 
         // calculate text height
-        const lineHeight = style.lineHeight || fontProperties.fontSize + style.strokeThickness;
+        const lineHeight = this.style.lineHeight || fontProperties.fontSize + style.strokeThickness;
 
         let height = Math.max(lineHeight, fontProperties.fontSize + style.strokeThickness)
             + ((lines.length - 1) * lineHeight);
@@ -171,7 +172,7 @@ export default class Text extends Sprite
             height += style.dropShadowDistance;
         }
 
-        this.canvas.height = Math.ceil((height + (style.padding * 2)) * this.resolution);
+        this.canvas.height = Math.ceil((height + (this._style.padding * 2)) * this.resolution);
 
         this.context.scale(this.resolution, this.resolution);
 
@@ -403,9 +404,8 @@ export default class Text extends Sprite
         // Greedy wrapping algorithm that will wrap words as the line grows longer
         // than its horizontal bounds.
         let result = '';
-        const style = this._style;
         const lines = text.split('\n');
-        const wordWrapWidth = style.wordWrapWidth;
+        const wordWrapWidth = this._style.wordWrapWidth;
 
         for (let i = 0; i < lines.length; i++)
         {
@@ -416,7 +416,7 @@ export default class Text extends Sprite
             {
                 const wordWidth = this.context.measureText(words[j]).width;
 
-                if (style.breakWords && wordWidth > wordWrapWidth)
+                if (this._style.breakWords && wordWidth > wordWrapWidth)
                 {
                     // Word should be split in the middle
                     const characters = words[j].split('');
@@ -600,21 +600,27 @@ export default class Text extends Sprite
      * The width of the Text, setting this will actually modify the scale to achieve the value set
      *
      * @member {number}
+     * @memberof PIXI.Text#
      */
     get width()
     {
         this.updateText(true);
 
-        return Math.abs(this.scale.x) * this._texture.orig.width;
+        return Math.abs(this.scale.x) * this.texture.orig.width;
     }
 
-    set width(value) // eslint-disable-line require-jsdoc
+    /**
+     * Sets the width of the text.
+     *
+     * @param {number} value - The value to set to.
+     */
+    set width(value)
     {
         this.updateText(true);
 
         const s = sign(this.scale.x) || 1;
 
-        this.scale.x = s * value / this._texture.orig.width;
+        this.scale.x = s * value / this.texture.orig.width;
         this._width = value;
     }
 
@@ -622,6 +628,7 @@ export default class Text extends Sprite
      * The height of the Text, setting this will actually modify the scale to achieve the value set
      *
      * @member {number}
+     * @memberof PIXI.Text#
      */
     get height()
     {
@@ -630,13 +637,18 @@ export default class Text extends Sprite
         return Math.abs(this.scale.y) * this._texture.orig.height;
     }
 
-    set height(value) // eslint-disable-line require-jsdoc
+    /**
+     * Sets the height of the text.
+     *
+     * @param {number} value - The value to set to.
+     */
+    set height(value)
     {
         this.updateText(true);
 
         const s = sign(this.scale.y) || 1;
 
-        this.scale.y = s * value / this._texture.orig.height;
+        this.scale.y = s * value / this.texture.orig.height;
         this._height = value;
     }
 
@@ -645,13 +657,19 @@ export default class Text extends Sprite
      * object and mark the text as dirty.
      *
      * @member {object|PIXI.TextStyle}
+     * @memberof PIXI.Text#
      */
     get style()
     {
         return this._style;
     }
 
-    set style(style) // eslint-disable-line require-jsdoc
+    /**
+     * Sets the style of the text.
+     *
+     * @param {object} style - The value to set to.
+     */
+    set style(style)
     {
         style = style || {};
 
@@ -672,15 +690,22 @@ export default class Text extends Sprite
      * Set the copy for the text object. To split a line you can use '\n'.
      *
      * @member {string}
+     * @memberof PIXI.Text#
      */
     get text()
     {
         return this._text;
     }
 
-    set text(text) // eslint-disable-line require-jsdoc
+    /**
+     * Sets the text.
+     *
+     * @param {string} text - The value to set to.
+     */
+    set text(text)
     {
-        text = String(text || ' ');
+        text = text || ' ';
+        text = text.toString();
 
         if (this._text === text)
         {
@@ -710,29 +735,7 @@ export default class Text extends Sprite
         // build canvas api font setting from individual components. Convert a numeric style.fontSize to px
         const fontSizeString = (typeof style.fontSize === 'number') ? `${style.fontSize}px` : style.fontSize;
 
-        // Clean-up fontFamily property by quoting each font name
-        // this will support font names with spaces
-        let fontFamilies = style.fontFamily;
-
-        if (!Array.isArray(style.fontFamily))
-        {
-            fontFamilies = style.fontFamily.split(',');
-        }
-
-        for (let i = fontFamilies.length - 1; i >= 0; i--)
-        {
-            // Trim any extra white-space
-            let fontFamily = fontFamilies[i].trim();
-
-            // Check if font already contains strings
-            if (!(/([\"\'])[^\'\"]+\1/).test(fontFamily))
-            {
-                fontFamily = `"${fontFamily}"`;
-            }
-            fontFamilies[i] = fontFamily;
-        }
-
-        return `${style.fontStyle} ${style.fontVariant} ${style.fontWeight} ${fontSizeString} ${fontFamilies.join(',')}`;
+        return `${style.fontStyle} ${style.fontVariant} ${style.fontWeight} ${fontSizeString} "${style.fontFamily}"`;
     }
 
     /**

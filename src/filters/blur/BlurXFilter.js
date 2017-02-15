@@ -15,14 +15,12 @@ export default class BlurXFilter extends core.Filter
     /**
      * @param {number} strength - The strength of the blur filter.
      * @param {number} quality - The quality of the blur filter.
-     * @param {number} resolution - The resolution of the blur filter.
-     * @param {number} [kernelSize=5] - The kernelSize of the blur filter.Options: 5, 7, 9, 11, 13, 15.
+     * @param {number} resolution - The reoslution of the blur filter.
      */
-    constructor(strength, quality, resolution, kernelSize)
+    constructor(strength, quality, resolution)
     {
-        kernelSize = kernelSize || 5;
-        const vertSrc = generateBlurVertSource(kernelSize, true);
-        const fragSrc = generateBlurFragSource(kernelSize);
+        const vertSrc = generateBlurVertSource(5, true);
+        const fragSrc = generateBlurFragSource(5);
 
         super(
             // vertex shader
@@ -98,6 +96,7 @@ export default class BlurXFilter extends core.Filter
      * Sets the strength of both the blur.
      *
      * @member {number}
+     * @memberof PIXI.filters.BlurXFilter#
      * @default 16
      */
     get blur()
@@ -105,7 +104,12 @@ export default class BlurXFilter extends core.Filter
         return this.strength;
     }
 
-    set blur(value) // eslint-disable-line require-jsdoc
+    /**
+     * Sets the strength of the blur.
+     *
+     * @param {number} value - The value to set.
+     */
+    set blur(value)
     {
         this.padding = Math.abs(value) * 2;
         this.strength = value;
@@ -116,6 +120,7 @@ export default class BlurXFilter extends core.Filter
      * quaility bluring but the lower the performance.
      *
      * @member {number}
+     * @memberof PIXI.filters.BlurXFilter#
      * @default 4
      */
     get quality()
@@ -123,7 +128,12 @@ export default class BlurXFilter extends core.Filter
         return this._quality;
     }
 
-    set quality(value) // eslint-disable-line require-jsdoc
+    /**
+     * Sets the quality of the blur.
+     *
+     * @param {number} value - The value to set.
+     */
+    set quality(value)
     {
         this._quality = value;
         this.passes = value;

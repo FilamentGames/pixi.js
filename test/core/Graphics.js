@@ -1,10 +1,10 @@
 'use strict';
 
-describe('PIXI.Graphics', function ()
+describe('PIXI.Graphics', () =>
 {
-    describe('constructor', function ()
+    describe('constructor', () =>
     {
-        it('should set defaults', function ()
+        it('should set defaults', () =>
         {
             const graphics = new PIXI.Graphics();
 
@@ -16,9 +16,9 @@ describe('PIXI.Graphics', function ()
         });
     });
 
-    describe('lineTo', function ()
+    describe('lineTo', () =>
     {
-        it('should return correct bounds - north', function ()
+        it('should return correct bounds - north', () =>
         {
             const graphics = new PIXI.Graphics();
 
@@ -31,7 +31,7 @@ describe('PIXI.Graphics', function ()
             expect(graphics.height).to.be.equals(10);
         });
 
-        it('should return correct bounds - south', function ()
+        it('should return correct bounds - south', () =>
         {
             const graphics = new PIXI.Graphics();
 
@@ -44,7 +44,7 @@ describe('PIXI.Graphics', function ()
             expect(graphics.height).to.be.equals(10);
         });
 
-        it('should return correct bounds - east', function ()
+        it('should return correct bounds - east', () =>
         {
             const graphics = new PIXI.Graphics();
 
@@ -56,7 +56,7 @@ describe('PIXI.Graphics', function ()
             expect(graphics.width).to.be.equals(10);
         });
 
-        it('should return correct bounds - west', function ()
+        it('should return correct bounds - west', () =>
         {
             const graphics = new PIXI.Graphics();
 
@@ -69,7 +69,7 @@ describe('PIXI.Graphics', function ()
             expect(graphics.width).to.be.equals(10);
         });
 
-        it('should return correct bounds when stacked with circle', function ()
+        it('should return correct bounds when stacked with circle', () =>
         {
             const graphics = new PIXI.Graphics();
 
@@ -88,7 +88,7 @@ describe('PIXI.Graphics', function ()
             expect(graphics.height).to.be.equals(100);
         });
 
-        it('should return correct bounds when square', function ()
+        it('should return correct bounds when square', () =>
         {
             const graphics = new PIXI.Graphics();
 
@@ -104,9 +104,9 @@ describe('PIXI.Graphics', function ()
         });
     });
 
-    describe('containsPoint', function ()
+    describe('containsPoint', () =>
     {
-        it('should return true when point inside', function ()
+        it('should return true when point inside', () =>
         {
             const point = new PIXI.Point(1, 1);
             const graphics = new PIXI.Graphics();
@@ -117,7 +117,7 @@ describe('PIXI.Graphics', function ()
             expect(graphics.containsPoint(point)).to.be.true;
         });
 
-        it('should return false when point outside', function ()
+        it('should return false when point outside', () =>
         {
             const point = new PIXI.Point(20, 20);
             const graphics = new PIXI.Graphics();
@@ -126,86 +126,6 @@ describe('PIXI.Graphics', function ()
             graphics.drawRect(0, 0, 10, 10);
 
             expect(graphics.containsPoint(point)).to.be.false;
-        });
-    });
-
-    describe('arc', function ()
-    {
-        it('should draw an arc', function ()
-        {
-            const graphics = new PIXI.Graphics();
-
-            expect(graphics.currentPath).to.be.null;
-
-            expect(() => graphics.arc(100, 30, 20, 0, Math.PI)).to.not.throw();
-
-            expect(graphics.currentPath).to.be.not.null;
-        });
-
-        it('should not throw with other shapes', function ()
-        {
-            // complex drawing #1: draw triangle, rounder rect and an arc (issue #3433)
-            const graphics = new PIXI.Graphics();
-
-            // set a fill and line style
-            graphics.beginFill(0xFF3300);
-            graphics.lineStyle(4, 0xffd900, 1);
-
-            // draw a shape
-            graphics.moveTo(50, 50);
-            graphics.lineTo(250, 50);
-            graphics.lineTo(100, 100);
-            graphics.lineTo(50, 50);
-            graphics.endFill();
-
-            graphics.lineStyle(2, 0xFF00FF, 1);
-            graphics.beginFill(0xFF00BB, 0.25);
-            graphics.drawRoundedRect(150, 450, 300, 100, 15);
-            graphics.endFill();
-
-            graphics.beginFill();
-            graphics.lineStyle(4, 0x00ff00, 1);
-
-            expect(() => graphics.arc(300, 100, 20, 0, Math.PI)).to.not.throw();
-        });
-
-        it('should do nothing when startAngle and endAngle are equal', function ()
-        {
-            const graphics = new PIXI.Graphics();
-
-            expect(graphics.currentPath).to.be.null;
-
-            graphics.arc(0, 0, 10, 0, 0);
-
-            expect(graphics.currentPath).to.be.null;
-        });
-
-        it('should do nothing if sweep equals zero', function ()
-        {
-            const graphics = new PIXI.Graphics();
-
-            expect(graphics.currentPath).to.be.null;
-
-            graphics.arc(0, 0, 10, 10, 10);
-
-            expect(graphics.currentPath).to.be.null;
-        });
-    });
-
-    describe('_calculateBounds', function ()
-    {
-        it('should only call updateLocalBounds once', function ()
-        {
-            const graphics = new PIXI.Graphics();
-            const spy = sinon.spy(graphics, 'updateLocalBounds');
-
-            graphics._calculateBounds();
-
-            expect(spy).to.have.been.calledOnce;
-
-            graphics._calculateBounds();
-
-            expect(spy).to.have.been.calledOnce;
         });
     });
 });

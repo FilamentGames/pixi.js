@@ -121,8 +121,6 @@ export default class CanvasRenderer extends SystemRenderer
 
         this.emit('prerender');
 
-        const rootResolution = this.resolution;
-
         if (renderTexture)
         {
             renderTexture = renderTexture.baseTexture || renderTexture;
@@ -209,31 +207,7 @@ export default class CanvasRenderer extends SystemRenderer
         displayObject.renderCanvas(this);
         this.context = tempContext;
 
-        this.resolution = rootResolution;
-
         this.emit('postrender');
-    }
-
-    /**
-     * Clear the canvas of renderer.
-     *
-     * @param {string} [clearColor] - Clear the canvas with this color, except the canvas is transparent.
-     */
-    clear(clearColor)
-    {
-        const context = this.context;
-
-        clearColor = clearColor || this._backgroundColorString;
-
-        if (!this.transparent && clearColor)
-        {
-            context.fillStyle = clearColor;
-            context.fillRect(0, 0, this.width, this.height);
-        }
-        else
-        {
-            context.clearRect(0, 0, this.width, this.height);
-        }
     }
 
     /**
