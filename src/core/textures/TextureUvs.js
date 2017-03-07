@@ -53,34 +53,34 @@ export default class TextureUvs
             const cY = (frame.y / th) + h2;
 
             rotate = GroupD8.add(rotate, GroupD8.NW); // NW is top-left corner
-            this.x0 = cX + (w2 * GroupD8.uX(rotate));
-            this.y0 = cY + (h2 * GroupD8.uY(rotate));
+            this.x3 = cX + (w2 * GroupD8.uX(rotate));
+            this.y3 = cY + (h2 * GroupD8.uY(rotate));
 
             rotate = GroupD8.add(rotate, 2); // rotate 90 degrees clockwise
-            this.x1 = cX + (w2 * GroupD8.uX(rotate));
-            this.y1 = cY + (h2 * GroupD8.uY(rotate));
-
-            rotate = GroupD8.add(rotate, 2);
             this.x2 = cX + (w2 * GroupD8.uX(rotate));
             this.y2 = cY + (h2 * GroupD8.uY(rotate));
 
             rotate = GroupD8.add(rotate, 2);
-            this.x3 = cX + (w2 * GroupD8.uX(rotate));
-            this.y3 = cY + (h2 * GroupD8.uY(rotate));
+            this.x1 = cX + (w2 * GroupD8.uX(rotate));
+            this.y1 = cY + (h2 * GroupD8.uY(rotate));
+
+            rotate = GroupD8.add(rotate, 2);
+            this.x0 = cX + (w2 * GroupD8.uX(rotate));
+            this.y0 = cY + (h2 * GroupD8.uY(rotate));
         }
         else
         {
-            this.x0 = frame.x / tw;
-            this.y0 = frame.y / th;
-
-            this.x1 = (frame.x + frame.width) / tw;
-            this.y1 = frame.y / th;
+            this.x3 = frame.x / tw;
+            this.y3 = frame.y / th;
 
             this.x2 = (frame.x + frame.width) / tw;
-            this.y2 = (frame.y + frame.height) / th;
+            this.y2 = frame.y / th;
 
-            this.x3 = frame.x / tw;
-            this.y3 = (frame.y + frame.height) / th;
+            this.x1 = (frame.x + frame.width) / tw;
+            this.y1 = (frame.y + frame.height) / th;
+
+            this.x0 = frame.x / tw;
+            this.y0 = (frame.y + frame.height) / th;
         }
 
         this.uvsUint32[0] = (((this.y0 * 65535) & 0xFFFF) << 16) | ((this.x0 * 65535) & 0xFFFF);
