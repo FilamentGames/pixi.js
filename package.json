@@ -1,6 +1,6 @@
 {
   "name": "pixi.js",
-  "version": "4.4.1",
+  "version": "4.4.1-filament1",
   "description": "Pixi.js is a fast lightweight 2D library that works across all devices.",
   "author": "Mat Groves",
   "contributors": [
@@ -9,6 +9,9 @@
     "Chad Engler <chad@pantherdev.com>",
     "Richard Davey <rdavey@gmail.com>"
   ],
+  "publishConfig": {
+    "registry": "http://registry.filamentgames.com"
+  },
   "main": "./lib/index.js",
   "homepage": "http://goodboydigital.com/",
   "bugs": "https://github.com/pixijs/pixi.js/issues",
