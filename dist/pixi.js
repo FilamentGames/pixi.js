@@ -1,6 +1,6 @@
 /*!
  * pixi.js - v4.2.3-filament3
- * Compiled Wed, 15 Feb 2017 17:10:56 UTC
+ * Compiled Tue, 07 Mar 2017 03:12:08 UTC
  *
  * pixi.js is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -19981,6 +19981,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var canvasRenderWorldTransform = new _math.Matrix();
+var invMat = new _math.Matrix();
 
 /**
  * @author Mat Groves
@@ -20066,6 +20067,12 @@ var CanvasSpriteRenderer = function () {
 
             dx -= width / 2;
             dy -= height / 2;
+
+            if (texture.baseTexture.source instanceof HTMLCanvasElement) {
+                // Invert the Y coordinate
+                invMat.setTransform(0, texture.height, 0, 0, 1, -1, 0, 0, 0, 0);
+                wt.append(invMat);
+            }
 
             // Allow for pixel rounding
             if (renderer.roundPixels) {

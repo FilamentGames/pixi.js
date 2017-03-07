@@ -4,6 +4,7 @@ import { Matrix, GroupD8 } from '../../math';
 import CanvasTinter from './CanvasTinter';
 
 const canvasRenderWorldTransform = new Matrix();
+const invMat = new Matrix();
 
 /**
  * @author Mat Groves
@@ -94,6 +95,13 @@ export default class CanvasSpriteRenderer
 
             dx -= width / 2;
             dy -= height / 2;
+
+            if (texture.baseTexture.source instanceof HTMLCanvasElement)
+            {
+                // Invert the Y coordinate
+                invMat.setTransform(0, texture.height, 0, 0, 1, -1, 0, 0, 0, 0);
+                wt.append(invMat);
+            }
 
             // Allow for pixel rounding
             if (renderer.roundPixels)
