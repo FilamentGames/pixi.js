@@ -3,8 +3,6 @@ import { blobMiddlewareFactory } from 'resource-loader/lib/middlewares/parsing/b
 import EventEmitter from 'eventemitter3';
 import textureParser from './textureParser';
 import spritesheetParser from './spritesheetParser';
-import bitmapFontParser from './bitmapFontParser';
-
 /**
  *
  * The new loader, extends Resource Loader by Chad Engler: https://github.com/englercj/resource-loader
@@ -114,8 +112,6 @@ Loader._pixiMiddleware = [
     textureParser,
     // parse any spritesheet data into multiple textures
     spritesheetParser,
-    // parse bitmap font data into multiple textures
-    bitmapFontParser,
 ];
 
 // Add custom extentions

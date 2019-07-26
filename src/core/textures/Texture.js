@@ -1,5 +1,4 @@
 import BaseTexture from './BaseTexture';
-import VideoBaseTexture from './VideoBaseTexture';
 import TextureUvs from './TextureUvs';
 import EventEmitter from 'eventemitter3';
 import { Rectangle, Point } from '../math';
@@ -351,46 +350,11 @@ export default class Texture extends EventEmitter
     }
 
     /**
-     * Helper function that creates a new Texture based on the given video element.
-     *
-     * @static
-     * @param {HTMLVideoElement|string} video - The URL or actual element of the video
-     * @param {number} [scaleMode=PIXI.settings.SCALE_MODE] - See {@link PIXI.SCALE_MODES} for possible values
-     * @param {boolean} [crossorigin=(auto)] - Should use anonymous CORS? Defaults to true if the URL is not a data-URI.
-     * @param {boolean} [autoPlay=true] - Start playing video as soon as it is loaded
-     * @return {PIXI.Texture} The newly created texture
-     */
-    static fromVideo(video, scaleMode, crossorigin, autoPlay)
-    {
-        if (typeof video === 'string')
-        {
-            return Texture.fromVideoUrl(video, scaleMode, crossorigin, autoPlay);
-        }
-
-        return new Texture(VideoBaseTexture.fromVideo(video, scaleMode, autoPlay));
-    }
-
-    /**
-     * Helper function that creates a new Texture based on the video url.
-     *
-     * @static
-     * @param {string} videoUrl - URL of the video
-     * @param {number} [scaleMode=PIXI.settings.SCALE_MODE] - See {@link PIXI.SCALE_MODES} for possible values
-     * @param {boolean} [crossorigin=(auto)] - Should use anonymous CORS? Defaults to true if the URL is not a data-URI.
-     * @param {boolean} [autoPlay=true] - Start playing video as soon as it is loaded
-     * @return {PIXI.Texture} The newly created texture
-     */
-    static fromVideoUrl(videoUrl, scaleMode, crossorigin, autoPlay)
-    {
-        return new Texture(VideoBaseTexture.fromUrl(videoUrl, scaleMode, crossorigin, autoPlay));
-    }
-
-    /**
      * Helper function that creates a new Texture based on the source you provide.
-     * The source can be - frame id, image url, video url, canvas element, video element, base texture
+     * The source can be - frame id, image url, canvas element, base texture
      *
      * @static
-     * @param {number|string|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement|PIXI.BaseTexture}
+     * @param {number|string|HTMLImageElement|HTMLCanvasElement|PIXI.BaseTexture}
      *        source - Source to create texture from
      * @return {PIXI.Texture} The newly created texture
      */
@@ -404,14 +368,6 @@ export default class Texture extends EventEmitter
 
             if (!texture)
             {
-                // check if its a video..
-                const isVideo = source.match(/\.(mp4|webm|ogg|h264|avi|mov)$/) !== null;
-
-                if (isVideo)
-                {
-                    return Texture.fromVideoUrl(source);
-                }
-
                 return Texture.fromImage(source);
             }
 
@@ -424,10 +380,6 @@ export default class Texture extends EventEmitter
         else if (source instanceof HTMLCanvasElement)
         {
             return Texture.fromCanvas(source, settings.SCALE_MODE, 'HTMLCanvasElement');
-        }
-        else if (source instanceof HTMLVideoElement)
-        {
-            return Texture.fromVideo(source);
         }
         else if (source instanceof BaseTexture)
         {

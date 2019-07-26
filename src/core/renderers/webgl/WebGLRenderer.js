@@ -1,7 +1,4 @@
 import SystemRenderer from '../SystemRenderer';
-import MaskManager from './managers/MaskManager';
-import StencilManager from './managers/StencilManager';
-import FilterManager from './managers/FilterManager';
 import RenderTarget from './utils/RenderTarget';
 import ObjectRenderer from './utils/ObjectRenderer';
 import TextureManager from './TextureManager';
@@ -92,26 +89,12 @@ export default class WebGLRenderer extends SystemRenderer
             alpha: this.transparent,
             antialias: this.options.antialias,
             premultipliedAlpha: this.transparent && this.transparent !== 'notMultiplied',
-            stencil: true,
+            stencil: false,
             preserveDrawingBuffer: this.options.preserveDrawingBuffer,
             powerPreference: this.options.powerPreference,
         };
 
         this._backgroundColorRgba[3] = this.transparent ? 0 : 1;
-
-        /**
-         * Manages the masks using the stencil buffer.
-         *
-         * @member {PIXI.MaskManager}
-         */
-        this.maskManager = new MaskManager(this);
-
-        /**
-         * Manages the stencil buffer.
-         *
-         * @member {PIXI.StencilManager}
-         */
-        this.stencilManager = new StencilManager(this);
 
         /**
          * An empty renderer.
@@ -132,13 +115,6 @@ export default class WebGLRenderer extends SystemRenderer
          * @member {PIXI.TextureManager}
          */
         this.textureManager = null;
-
-        /**
-         * Manages the filters.
-         *
-         * @member {PIXI.FilterManager}
-         */
-        this.filterManager = null;
 
         this.initPlugins();
 
@@ -250,7 +226,6 @@ export default class WebGLRenderer extends SystemRenderer
 
         // create a texture manager...
         this.textureManager = new TextureManager(this);
-        this.filterManager = new FilterManager(this);
         this.textureGC = new TextureGarbageCollector(this);
 
         this.state.resetToDefault();
@@ -501,8 +476,6 @@ export default class WebGLRenderer extends SystemRenderer
             {
                 this._activeShader.uniforms.projectionMatrix = renderTarget.projectionMatrix.toArray(true);
             }
-
-            this.stencilManager.setMaskStack(renderTarget.stencilMaskStack);
         }
 
         return this;
@@ -722,7 +695,6 @@ export default class WebGLRenderer extends SystemRenderer
     handleContextRestored()
     {
         this.textureManager.removeAll();
-        this.filterManager.destroy(true);
         this._initContext();
     }
 
@@ -747,13 +719,6 @@ export default class WebGLRenderer extends SystemRenderer
 
         this.uid = 0;
 
-        // destroy the managers
-        this.maskManager.destroy();
-        this.stencilManager.destroy();
-        this.filterManager.destroy();
-
-        this.maskManager = null;
-        this.filterManager = null;
         this.textureManager = null;
         this.currentRenderer = null;
 
